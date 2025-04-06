@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
     "dev": "nodemon server.js", 
-    "build": "npm install && cd frontend && rm -rf node_modules package-lock.json && npm install --production=false && npm run build"
+    "build": "npm install && npm audit fix && npm uninstall timespan && npm uninstall build && npm uninstall jxLoader && npm install js-yaml@latest uglify-js@latest && cd frontend && rm -rf node_modules package-lock.json && npm install --production=false && npm audit fix && npm run build" 
   },
   "keywords": [],
   "author": "",
@@ -19,14 +19,12 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.12.1",
-    "run": "^1.5.0",
+    "mongoose": "^8.12.1", 
     "socket.io": "^4.8.1",
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.4",
-    "install": "^0.13.0",
+    "@vitejs/plugin-react": "^4.3.4", 
     "npm": "^11.2.0"
   }
 }
