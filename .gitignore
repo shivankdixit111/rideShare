@@ -1,0 +1,7 @@
+/backend/node_modules
+/backend/.env
+/backend/frontend/node_modules
+/backend/frontend/.env
+/backend/.DS_Store
+/backend/frontend/.DS_Store
+# Ignore Mac system files
