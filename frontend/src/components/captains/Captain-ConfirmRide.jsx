@@ -18,7 +18,7 @@ const CaptainCofirmRide = (props) => {
             "rideId" : props.ride._id,
         }
 
-        const response = await fetch('http://localhost:8080/api/ride/confirm', {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/ride/confirm`, {
             method: "POST",
             headers: {
               'Authorization' : captainAuthorizationToken,
