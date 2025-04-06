@@ -1,12 +1,12 @@
 {
-  "name": "uber_app_",
+  "name": "ride_share",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
-    "dev": "nodemon server.js",
-    "build": "npm install && npm audit fix && npm uninstall timespan && cd frontend && rm -rf node_modules package-lock.json && npm install --production=false && npm audit fix && npm run build"
+    "dev": "nodemon server.js", 
+    "build": "npm install && cd frontend && rm -rf node_modules package-lock.json && npm install --production=false && npm run build"
   },
   "keywords": [],
   "author": "",
@@ -14,9 +14,13 @@
   "description": "",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "build": "^0.1.4",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.12.1",
+    "run": "^1.5.0",
     "socket.io": "^4.8.1",
     "zod": "^3.24.2"
   },
