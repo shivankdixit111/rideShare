@@ -113,7 +113,7 @@ useGSAP(()=>{
  
     console.log('Ride is being prepared')
     const createRide = async()=>{
-       const response = await fetch('http://localhost:8080/api/maps/get_origin_to_destination', {
+       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/maps/get_origin_to_destination`, {
          method: "POST",
          headers: {
            'Content-Type': 'application/json',
