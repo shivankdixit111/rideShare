@@ -5,8 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
-    "dev": "nodemon server.js", 
-    "build": "npm install && npm audit fix && npm uninstall timespan build jxLoader && npm install js-yaml@latest uglify-js@latest && cd frontend && rm -rf node_modules package-lock.json && npm install --production=false @vitejs/plugin-react && npm audit fix && npm run build"
+    "dev": "nodemon server.js",   
+    "build": "npm ci && npm audit fix && npm uninstall timespan build jxLoader && npm install js-yaml@latest uglify-js@latest && cd frontend && rm -rf node_modules package-lock.json && npm ci --production=false && npm audit fix && npm run build"
   },
   "keywords": [],
   "author": "",
