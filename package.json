@@ -5,15 +5,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
-    "dev": "nodemon server.js",  
-    "build": "npm install && npm audit fix && cd frontend  && npm install --production=false && npm audit fix && npm run build"
+    "dev": "nodemon server.js",
+    "build": "npm install && npm audit fix && npm uninstall timespan && cd frontend && rm -rf node_modules package-lock.json && npm install --production=false && npm audit fix && npm run build"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "bcrypt": "^5.1.1", 
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
