@@ -1,12 +1,12 @@
 {
-  "name": "uber_app",
+  "name": "uber_app_",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
     "dev": "nodemon server.js", 
-    "build": "npm install && cd frontend && rm -rf node_modules package-lock.json && rm -rf node_modules/@vitejs/plugin-react && npm install && npm run build"
+    "build": "npm install && cd frontend && rm -rf node_modules package-lock.json && npm install --production=false && npm run build"
   },
   "keywords": [],
   "author": "",
