@@ -51,7 +51,7 @@ const LocationPannel = (props) => {
     setD(1);
     setP(0);
     const getSuggestions = (async()=>{
-        const response = await fetch(`http://localhost:8080/api/maps/get_suggestions_of_search_data`,{
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/maps/get_suggestions_of_search_data`,{
           method: "POST",
           headers: {
               'Content-Type' : 'application/json'
