@@ -6,4 +6,4 @@ async function connectToDB() {
     .catch(()=> console.log('failed to connect to database'))
 }
 
-module.exports = connectToDB;
+module.exports = connectToDB; //
