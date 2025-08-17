@@ -37,15 +37,12 @@ const CaptainHome = () => {
     if(!currentCaptain?._id || !socket) return; 
   
     const handleConnect = () => { 
+      console.log("Captain joining with:", currentCaptain._id);
       socket.emit("join", {userType: "Captain", userId: currentCaptain._id});
     };
-  
-    // Handle both immediate connection and future connections
-    if(socket.connected) {
-      handleConnect();
-    } else {
-      socket.on('connect', handleConnect);
-    }
+    
+    // always join on connect + reconnect
+     socket.on('connect', handleConnect);  
 
       // Create a stable handler reference
       rideHandlerRef.current = (data) => { 
@@ -68,8 +65,7 @@ const CaptainHome = () => {
       });
     });
   
-   
-   
+    
   
     const locationInterval = setInterval(updateLocation, 30000);
     

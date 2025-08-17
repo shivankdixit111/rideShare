@@ -26,6 +26,14 @@ const userSchema = new mongoose.Schema({
         required: true,
     },
     socketId: String,
+     online: {
+      type: Boolean,
+      default: false  
+    },
+    lastActive: {
+        type: Date,
+        default: Date.now,
+    }
 });
 
 //hashing of password will be done on pre() method

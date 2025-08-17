@@ -10,6 +10,11 @@ let activeCaptains = new Map(); // Map to store active captains and their socket
 // activeCaptains is a Map object that stores the active captains and their socket IDs. This allows you to keep track of which captains are currently connected to the WebSocket server.
 // This is useful for sending messages to specific captains based on their socket IDs.
 // The Map object holds key-value pairs, where the key is the captain's ID and the value is the socket ID.
+let activeUsers = new Map();
+
+console.log('activeCaptains are - ', activeCaptains)
+console.log('activeUsers are - ', activeUsers)
+
 
 function initializeSocket(server) {
     // io is an instance of socket.io that represents the WebSocket server.
@@ -22,7 +27,7 @@ function initializeSocket(server) {
     })
 
     io.on('connection', (socket)=> {
-        // console.log(`client connected ${socket.id}`)
+        console.log(`client connected ${socket.id}`)
 
         // socket.on('join', callback) is used inside io.on('connection'), meaning it listens for the 'join' event
         //  only for the connected client.
@@ -33,9 +38,16 @@ function initializeSocket(server) {
             const {userId, userType} = data;
  
             if(userType === "User") {
-                await User.findByIdAndUpdate(userId, {socketId: socket.id})
+                activeUsers.set(userId.toString(), socket.id);
+                await User.findByIdAndUpdate(userId, 
+                    {
+                        socketId: socket.id,
+                        online: true,
+                        lastActive: new Date(),
+                    }
+                )
             } else if(userType === "Captain"){
-                activeCaptains.set(userId, socket.id);
+                activeCaptains.set(userId.toString(), socket.id);
                 await Captain.findByIdAndUpdate(userId, 
                     {
                         socketId: socket.id,
@@ -59,21 +71,36 @@ function initializeSocket(server) {
         })
 
         socket.on('disconnect', async() => {
-             for(const [userId, socketId] of activeCaptains) {
+             for(const [captainId, socketId] of activeCaptains) {
                 if(socketId === socket.id) {
-                    activeCaptains.delete(userId);
-                    await Captain.findByIdAndUpdate(userId, { 
+                    activeCaptains.delete(captainId.toString());
+                    await Captain.findByIdAndUpdate(captainId, { 
+                        online: false,
+                        lastActive: new Date(),
+                    })
+                    console.log(`Captain ${captainId} disconnectd`)
+                    break;
+                }
+             }
+
+             for(const [userId, socketId] of activeUsers) {
+                if(socketId === socket.id) {
+                    activeUsers.delete(userId.toString());
+                    await User.findByIdAndUpdate(userId, { 
                         online: false,
                         lastActive: new Date(),
                     })
 
-                    console.log(`Captain ${userId} disconnectd`)
+                    console.log(`User ${userId} disconnectd`)
                     break;
                 }
              }
         })
     })
 }
+
+console.log('active Captains are - ', activeCaptains)
+console.log('active Users are - ', activeUsers)
 
 function sendMessageToSocketId(socketId, msgObj) {   
     if(io) { 
@@ -83,4 +110,32 @@ function sendMessageToSocketId(socketId, msgObj) {
     }
 }
 
-module.exports = {initializeSocket, sendMessageToSocketId}
+
+async function sendMessageToCaptain(userId, msgObj) {   
+    let socketId = activeCaptains.get(userId.toString());
+    if(!socketId) {
+        const captain = await Captain.findById(userId);
+        if(captain && captain.socketId) {
+            socketId = captain.socketId;
+            console.log('Fallback: using DB socketID ', socketId)
+        }
+    }
+    console.log('sending message to captain ', socketId, userId.toString())
+    if(socketId) sendMessageToSocketId(socketId, msgObj); 
+}
+
+async function sendMessageToUser(userId, msgObj) {   
+    let socketId = activeUsers.get(userId.toString());
+    if(!socketId) {
+        const user = await User.findById(userId);
+        if(user && user.socketId) {
+            socketId = user.socketId;
+            console.log('Fallback: using DB socketID ', socketId)
+        }
+    }
+
+    console.log('sending message to user ', socketId, userId.toString())
+    if(socketId) sendMessageToSocketId(socketId, msgObj); 
+}
+
+module.exports = {initializeSocket, sendMessageToSocketId, sendMessageToUser, sendMessageToCaptain}

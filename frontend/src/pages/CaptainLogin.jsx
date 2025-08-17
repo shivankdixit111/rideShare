@@ -17,6 +17,8 @@ const captainLogin = () => {
   }
   const handleSubmit = async(e)=>{
      e.preventDefault(); 
+
+     console.log('backend url is ', import.meta.env.VITE_BACKEND_URL);
  
 
      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/captain/login`, {

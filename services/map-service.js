@@ -30,6 +30,7 @@ const getSuggestions = async(searchData) => {
         for(let p of data.predictions) predictions.push(p.description); 
         return predictions;
     } catch(error) {
+        console.log(error)
         return res.status(400).json("error in api fetch")
     }
 }

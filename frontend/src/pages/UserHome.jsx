@@ -36,7 +36,15 @@ const UserHome = () => {
   const rideHandlerRef = useRef(null);
 
   useEffect(()=>{
-     socket.emit("join", {userType: "User", userId: currentUser?._id }) 
+     if (!currentUser?._id || !socket) return;   // wait until user is loaded]
+
+     const handleConnect = () => { 
+      console.log("User joining with:", currentUser._id);
+      socket.emit("join", {userType: "User", userId: currentUser._id }) 
+    };
+    
+    // always join on connect + reconnect
+     socket.on('connect', handleConnect);   
 
      const rideHandler =  (ride)=>{ 
         setRide(ride);
@@ -44,7 +52,6 @@ const UserHome = () => {
      }  
  
      socket.on('confirm-ride', rideHandler); // add new listener
-  
 
   return ()=> {
     socket.off('confirm-ride', rideHandler)

@@ -1,7 +1,7 @@
 const Ride = require("../models/Ride");
 const { distinct } = require("../models/user-model");
 const mapService = require('../services/map-service');
-const { sendMessageToSocketId } = require("../socket");
+const { sendMessageToUser } = require("../socket");
 
 const confirmRide = async(req, res)=>{
     try { 
@@ -19,7 +19,7 @@ const confirmRide = async(req, res)=>{
         ).populate({path: 'user', select: "-password"}).populate({path: 'captain', select: "-password"})
  
 
-        sendMessageToSocketId(rideData.user.socketId, {
+        sendMessageToUser(rideData.user._id, {
             event: 'confirm-ride',
             data: rideData
         })

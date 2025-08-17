@@ -1,9 +1,8 @@
 
-const { search } = require('../app');
-const Captain = require('../models/captain-model');
+const { search } = require('../app'); 
 const Ride = require('../models/Ride');
 const mapService = require('../services/map-service');
-const { sendMessageToSocketId } = require('../socket');
+const { sendMessageToCaptain  } = require('../socket');
 
 
 const get_origin_to_destination = async(req, res, next)=>{
@@ -31,14 +30,17 @@ const get_origin_to_destination = async(req, res, next)=>{
        const Captains = await mapService.get_nearby_captains(start_location.lat, start_location.lng)
 
       //  //sending Captains(which has same vehicle type required by user) a message regarding ride
-       for(let captain of Captains) {   
+      console.log(' ------- ') 
+       for(let captain of Captains) { 
          if(captain.vehicle.vehicleType == vehicleType) {  
-            sendMessageToSocketId(captain.socketId, {
+            console.log('captainsa are - ', captain)  
+            sendMessageToCaptain(captain._id, {
                event: 'new-ride',
                data: newRide
             })
          } 
       }
+      console.log(' ------- ') 
  
        return res.status(200).json({newRide})
     } catch(err) {
